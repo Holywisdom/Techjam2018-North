@@ -6,7 +6,7 @@ import pandas as pd
 
 advertisement_log_dataset = pd.read_csv('ad_log.csv')
 credit_card_transaction_dataset = pd.read_csv('cc_txn.csv')
-debit_card_dataset = pd.read_csv('dc_txn.csv')
+debit_card_transaction_dataset = pd.read_csv('dc_txn.csv')
 customer_demographic_dataset = pd.read_csv('demo.csv')
 action_history_dataset = pd.read_csv('events.csv')
 purchase_history_dataset = pd.read_csv('purchase.csv')
@@ -68,3 +68,9 @@ training_dataset = pd.read_csv('y_train.csv')
 '''
 
 # Rename columns
+
+credit_card_transaction_dataset.rename(index=str, columns={"category": "credit_card_category", "dt": "credit_card_dt", "txn_amt": "credit_card_txn_amt"}, inplace=True)
+debit_card_transaction_dataset.rename(index=str, columns={"category": "debit_card__category", "dt": "debit_card__dt", "txn_amt": "debit_card__txn_amt"}, inplace=True)
+purchase_history_dataset.rename(index=str, columns={"dt": "purchase_history__dt"}, inplace=True)
+action_history_dataset.rename(index=str, columns={"dt": "action_history__dt"}, inplace=True)
+advertisement_log_dataset.rename(index=str, columns={"dt": "advertisement_log__dt"}, inplace=True)
