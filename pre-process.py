@@ -74,3 +74,15 @@ debit_card_transaction_dataset.rename(index=str, columns={"category": "debit_car
 purchase_history_dataset.rename(index=str, columns={"dt": "purchase_history__dt"}, inplace=True)
 action_history_dataset.rename(index=str, columns={"dt": "action_history__dt"}, inplace=True)
 advertisement_log_dataset.rename(index=str, columns={"dt": "advertisement_log__dt"}, inplace=True)
+
+# Merchant category code
+
+def labelEncoder(Dataframe,CatType,Prefix,ColName) :
+    Dataframe[Prefix+CatType] = np.where(Dataframe[ColName]==CatType,1,0)
+
+for i in range(1, 16):
+    labelEncoder(credit_card_transaction_dataset,'cat'+str(i),'cc_','credit_card_category')
+    labelEncoder(debit_card_transaction_dataset,'cat'+str(i),'dc_','debit_card__category')
+
+credit_card_transaction_dataset.drop(columns=['credit_card_category'], inplace=True)
+debit_card_transaction_dataset.drop(columns=['debit_card__category'], inplace=True)
