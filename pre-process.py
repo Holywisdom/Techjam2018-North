@@ -25,16 +25,16 @@ training_dataset = pd.read_csv('y_train.csv')
     customer_index_dataset
         user_id
         
-    credit_card_transaction_dataset
+    credit_card_transaction_dataset (dup-1)
         user_id
-        category
-        dt
+        category 
+        dt (dup-2)
         txn_amt
         
-    debit_card_dataset
+    debit_card_dataset (dup-1)
         user_id
-        category
-        dt
+        category 
+        dt (dup-2)
         txn_amt
         
     customer_demographic_dataset
@@ -48,18 +48,18 @@ training_dataset = pd.read_csv('y_train.csv')
         
     purchase_history_dataset
         user_id
-        dt
+        dt (dup-2)
         product
     
     action_history_dataset
         user_id
-        dt
+        dt (dup-2)
         screen
         login_cnt
     
     advertisement_log_dataset
         user_id
-        dt
+        dt (dup-2)
     
     saving_balance_dataset
         user_id
