@@ -17,5 +17,54 @@ training_dataset = pd.read_csv('y_train.csv')
 
 # Dataset Structure
 
+'''
+    training_dataset
+        user_id
+        label
+        
+    customer_index_dataset
+        user_id
+        
+    credit_card_transaction_dataset
+        user_id
+        category
+        dt
+        txn_amt
+        
+    debit_card_dataset
+        user_id
+        category
+        dt
+        txn_amt
+        
+    customer_demographic_dataset
+        user_id
+        account_start_date
+        birth_year
+        gender
+        marital_status
+        individual_income_segment_code
+        family_income_segment_code
+        
+    purchase_history_dataset
+        user_id
+        dt
+        product
+    
+    action_history_dataset
+        user_id
+        dt
+        screen
+        login_cnt
+    
+    advertisement_log_dataset
+        user_id
+        dt
+    
+    saving_balance_dataset
+        user_id
+        month
+        balance
+'''
 
 # Rename columns
