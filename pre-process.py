@@ -103,6 +103,8 @@ all_tran_dataframe = pd.DataFrame(columns = ['user_id','cc_tran_count','cc_sum_a
 
 all_purchase_history_dataframe = pd.DataFrame(columns = ['user_id','purchase_count','product_A_count','product_B_count'])
 
+all_action_history_dataframe = pd.DataFrame(columns = ['user_id','number_action_history_screen1','dulation_action_history_screen1','number_action_history_screen2','dulation_action_history_screen2'])
+
 for index_number, row in all_user_dataframe.iterrows():
 
     UserID = row['user_id']
@@ -135,21 +137,40 @@ for index_number, row in all_user_dataframe.iterrows():
 
     #Purchase history
 
-    purchase_history_target_user = purchase_history_dataset[purchase_history_dataset['user_id']==int(row['user_id'])]
+    # purchase_history_target_user = purchase_history_dataset[purchase_history_dataset['user_id']==int(row['user_id'])]
 
-    size_purchase_history = len(purchase_history_target_user.index)
-    product_A_count = len(purchase_history_target_user[purchase_history_target_user['product'] == 'A'].index)
-    product_B_count = len(purchase_history_target_user[purchase_history_target_user['product'] == 'B'].index)
+    # size_purchase_history = len(purchase_history_target_user.index)
+    # product_A_count = len(purchase_history_target_user[purchase_history_target_user['product'] == 'A'].index)
+    # product_B_count = len(purchase_history_target_user[purchase_history_target_user['product'] == 'B'].index)
 
-    purchase_history_target_user_df = pd.DataFrame([[int(UserID),size_purchase_history,product_A_count,product_B_count]],columns = ['user_id','purchase_count','product_A_count','product_B_count'])
+    # purchase_history_target_user_df = pd.DataFrame([[int(UserID),size_purchase_history,product_A_count,product_B_count]],columns = ['user_id','purchase_count','product_A_count','product_B_count'])
 
-    all_purchase_history_dataframe = pd.concat([all_purchase_history_dataframe,purchase_history_target_user_df])
+    # all_purchase_history_dataframe = pd.concat([all_purchase_history_dataframe,purchase_history_target_user_df])
 
+    #Action history
 
+    action_history_target_user = action_history_dataset[action_history_dataset['user_id']==int(row['user_id'])]
+
+    action_history_screen1 = action_history_target_user[action_history_target_user['screen']=='screen1']
     
-    # if project_A_count != 0 :
-    #     print purchase_history_target_user[purchase_history_target_user['product'] == 'A']
-    # if product_B_count != 0 :
-    #     print product_B_count
+    number_action_history_screen1 = len(action_history_screen1.index)
+
+    dulation_action_history_screen1 = action_history_screen1['login_cnt'].sum()
+
+    action_history_screen2 = action_history_target_user[action_history_target_user['screen']=='screen2']
+
+    number_action_history_screen2 = len(action_history_screen2.index)
+
+    dulation_action_history_screen2 = action_history_screen2['login_cnt'].sum()
+
+    action_history_target_user_df = pd.DataFrame([[int(UserID),number_action_history_screen1,dulation_action_history_screen1,number_action_history_screen2,dulation_action_history_screen2]],columns = ['user_id','number_action_history_screen1','dulation_action_history_screen1','number_action_history_screen2','dulation_action_history_screen2'])
+
+    all_action_history_dataframe = pd.concat([all_action_history_dataframe,action_history_target_user_df])
+
+    print all_action_history_dataframe
 
     # print all_tran_dataframe
+
+# 10000000000,2018-06-15,screen1,4.0
+# 10000000001,2018-05-30,screen2,3.0
+# 10000000001,2018-06-22,screen2,4.0
