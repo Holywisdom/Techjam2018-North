@@ -88,6 +88,15 @@ advertisement_log_dataset.rename(index=str, columns={"dt": "advertisement_log__d
 # credit_card_transaction_dataset.drop(columns=['credit_card_category'], inplace=True)
 # debit_card_transaction_dataset.drop(columns=['debit_card__category'], inplace=True)
 
+
+#cleaning
+
+customer_demographic_dataset['marital_status'] = pd.to_numeric(customer_demographic_dataset.marital_status, errors='coerce').fillna(0).astype(int)
+customer_demographic_dataset['individual_income_segment_code'] = pd.to_numeric(customer_demographic_dataset.marital_status, errors='coerce').fillna(0).astype(int)
+customer_demographic_dataset['family_income_segment_code'] = pd.to_numeric(customer_demographic_dataset.family_income_segment_code, errors='coerce').fillna(0).astype(int)
+
+print customer_demographic_dataset
+
 #Merge All User
 
 customer_index_dataset.columns = ['user_id']
