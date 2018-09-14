@@ -94,34 +94,62 @@ customer_index_dataset.columns = ['user_id']
 
 all_user_dataframe = pd.merge(customer_index_dataset, training_dataset, on=['user_id'], how='outer')
 
-# Transaction Summary
+# Summary Dataset
 
 all_tran_count_cc_df = pd.DataFrame(columns = ['user_id','cc_tran_count','cc_sum_amount'])
 all_tran_count_dc_df = pd.DataFrame(columns = ['user_id','dc_tran_count','dc_sum_amount'])
 
 all_tran_dataframe = pd.DataFrame(columns = ['user_id','cc_tran_count','cc_sum_amount','dc_tran_count','dc_sum_amount'])
 
+all_purchase_history_dataframe = pd.DataFrame(columns = ['user_id','purchase_count','product_A_count','product_B_count'])
+
 for index_number, row in all_user_dataframe.iterrows():
-    target_user_cc = credit_card_transaction_dataset[credit_card_transaction_dataset['user_id']==int(row['user_id'])]
 
     UserID = row['user_id']
 
-    Size_cc = len(target_user_cc.index)
-    SumAmount_cc = target_user_cc['credit_card_txn_amt'].sum()
+    # #Transaction cc
 
-    target_user_cc_df = pd.DataFrame([[int(UserID),Size_cc,SumAmount_cc]],columns = ['user_id','cc_tran_count','cc_sum_amount'])
+    # target_user_cc = credit_card_transaction_dataset[credit_card_transaction_dataset['user_id']==int(row['user_id'])]
 
-    all_tran_count_cc_df = pd.concat([all_tran_count_cc_df,target_user_cc_df])
+    # Size_cc = len(target_user_cc.index)
+    # SumAmount_cc = target_user_cc['credit_card_txn_amt'].sum()
 
-    target_user_dc = debit_card_transaction_dataset[debit_card_transaction_dataset['user_id']==int(row['user_id'])]
+    # target_user_cc_df = pd.DataFrame([[int(UserID),Size_cc,SumAmount_cc]],columns = ['user_id','cc_tran_count','cc_sum_amount'])
 
-    Size_dc = len(target_user_dc.index)
-    SumAmount_dc = target_user_dc['debit_card__txn_amt'].sum()
+    # all_tran_count_cc_df = pd.concat([all_tran_count_cc_df,target_user_cc_df])
 
-    target_user_dc_df = pd.DataFrame([[int(UserID),Size_dc,SumAmount_dc]],columns = ['user_id','dc_tran_count','dc_sum_amount'])
+    # #Transaction cc
 
-    all_tran_count_dc_df = pd.concat([all_tran_count_dc_df,target_user_dc_df])
+    # target_user_dc = debit_card_transaction_dataset[debit_card_transaction_dataset['user_id']==int(row['user_id'])]
 
-    all_tran_dataframe = pd.merge(all_tran_count_cc_df, all_tran_count_dc_df, on=['user_id'], how='outer')
+    # Size_dc = len(target_user_dc.index)
+    # SumAmount_dc = target_user_dc['debit_card__txn_amt'].sum()
 
-    print all_tran_dataframe
+    # target_user_dc_df = pd.DataFrame([[int(UserID),Size_dc,SumAmount_dc]],columns = ['user_id','dc_tran_count','dc_sum_amount'])
+
+    # all_tran_count_dc_df = pd.concat([all_tran_count_dc_df,target_user_dc_df])
+
+    # #merge cc - dc
+
+    # all_tran_dataframe = pd.merge(all_tran_count_cc_df, all_tran_count_dc_df, on=['user_id'], how='outer')
+
+    #Purchase history
+
+    purchase_history_target_user = purchase_history_dataset[purchase_history_dataset['user_id']==int(row['user_id'])]
+
+    size_purchase_history = len(purchase_history_target_user.index)
+    product_A_count = len(purchase_history_target_user[purchase_history_target_user['product'] == 'A'].index)
+    product_B_count = len(purchase_history_target_user[purchase_history_target_user['product'] == 'B'].index)
+
+    purchase_history_target_user_df = pd.DataFrame([[int(UserID),size_purchase_history,product_A_count,product_B_count]],columns = ['user_id','purchase_count','product_A_count','product_B_count'])
+
+    all_purchase_history_dataframe = pd.concat([all_purchase_history_dataframe,purchase_history_target_user_df])
+
+
+    
+    # if project_A_count != 0 :
+    #     print purchase_history_target_user[purchase_history_target_user['product'] == 'A']
+    # if product_B_count != 0 :
+    #     print product_B_count
+
+    # print all_tran_dataframe
