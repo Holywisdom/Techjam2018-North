@@ -105,6 +105,8 @@ all_purchase_history_dataframe = pd.DataFrame(columns = ['user_id','purchase_cou
 
 all_action_history_dataframe = pd.DataFrame(columns = ['user_id','number_action_history_screen1','dulation_action_history_screen1','number_action_history_screen2','dulation_action_history_screen2'])
 
+all_saving_balance_dataframe = pd.DataFrame(columns = ['user_id','avg_saving_balance'])
+
 for index_number, row in all_user_dataframe.iterrows():
 
     UserID = row['user_id']
@@ -149,28 +151,37 @@ for index_number, row in all_user_dataframe.iterrows():
 
     #Action history
 
-    action_history_target_user = action_history_dataset[action_history_dataset['user_id']==int(row['user_id'])]
+    # action_history_target_user = action_history_dataset[action_history_dataset['user_id']==int(row['user_id'])]
 
-    action_history_screen1 = action_history_target_user[action_history_target_user['screen']=='screen1']
+    # action_history_screen1 = action_history_target_user[action_history_target_user['screen']=='screen1']
     
-    number_action_history_screen1 = len(action_history_screen1.index)
+    # number_action_history_screen1 = len(action_history_screen1.index)
 
-    dulation_action_history_screen1 = action_history_screen1['login_cnt'].sum()
+    # dulation_action_history_screen1 = action_history_screen1['login_cnt'].sum()
 
-    action_history_screen2 = action_history_target_user[action_history_target_user['screen']=='screen2']
+    # action_history_screen2 = action_history_target_user[action_history_target_user['screen']=='screen2']
 
-    number_action_history_screen2 = len(action_history_screen2.index)
+    # number_action_history_screen2 = len(action_history_screen2.index)
 
-    dulation_action_history_screen2 = action_history_screen2['login_cnt'].sum()
+    # dulation_action_history_screen2 = action_history_screen2['login_cnt'].sum()
 
-    action_history_target_user_df = pd.DataFrame([[int(UserID),number_action_history_screen1,dulation_action_history_screen1,number_action_history_screen2,dulation_action_history_screen2]],columns = ['user_id','number_action_history_screen1','dulation_action_history_screen1','number_action_history_screen2','dulation_action_history_screen2'])
+    # action_history_target_user_df = pd.DataFrame([[int(UserID),number_action_history_screen1,dulation_action_history_screen1,number_action_history_screen2,dulation_action_history_screen2]],columns = ['user_id','number_action_history_screen1','dulation_action_history_screen1','number_action_history_screen2','dulation_action_history_screen2'])
 
-    all_action_history_dataframe = pd.concat([all_action_history_dataframe,action_history_target_user_df])
+    # all_action_history_dataframe = pd.concat([all_action_history_dataframe,action_history_target_user_df])
 
-    print all_action_history_dataframe
+    # Saving balance
+
+    saving_balance_target_user = saving_balance_dataset[saving_balance_dataset['user_id']==int(row['user_id'])]
+
+    avg_saving_balance = saving_balance_target_user['balance'].mean()
+
+    saving_balance_target_user_df = pd.DataFrame([[int(UserID),avg_saving_balance]],columns = ['user_id','avg_saving_balance'])
+
+    all_saving_balance_dataframe = pd.concat([all_saving_balance_dataframe,saving_balance_target_user_df])
 
     # print all_tran_dataframe
 
-# 10000000000,2018-06-15,screen1,4.0
-# 10000000001,2018-05-30,screen2,3.0
-# 10000000001,2018-06-22,screen2,4.0
+# user_id,month,balance
+# 10000000000,5,10
+# 10000000000,6,28
+# 10000000000,7,57
