@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
+import pandasql
 
 # Import Dataset
 
@@ -77,12 +78,50 @@ advertisement_log_dataset.rename(index=str, columns={"dt": "advertisement_log__d
 
 # Merchant category code
 
-def labelEncoder(Dataframe,CatType,Prefix,ColName) :
-    Dataframe[Prefix+CatType] = np.where(Dataframe[ColName]==CatType,1,0)
+# def labelEncoder(Dataframe,CatType,Prefix,ColName) :
+#     Dataframe[Prefix+CatType] = np.where(Dataframe[ColName]==CatType,1,0)
 
-for i in range(1, 16):
-    labelEncoder(credit_card_transaction_dataset,'cat'+str(i),'cc_','credit_card_category')
-    labelEncoder(debit_card_transaction_dataset,'cat'+str(i),'dc_','debit_card__category')
+# for i in range(1, 16):
+#     labelEncoder(credit_card_transaction_dataset,'cat'+str(i),'cc_','credit_card_category')
+#     labelEncoder(debit_card_transaction_dataset,'cat'+str(i),'dc_','debit_card__category')
 
-credit_card_transaction_dataset.drop(columns=['credit_card_category'], inplace=True)
-debit_card_transaction_dataset.drop(columns=['debit_card__category'], inplace=True)
+# credit_card_transaction_dataset.drop(columns=['credit_card_category'], inplace=True)
+# debit_card_transaction_dataset.drop(columns=['debit_card__category'], inplace=True)
+
+#Merge All User
+
+customer_index_dataset.columns = ['user_id']
+
+all_user_dataframe = pd.merge(customer_index_dataset, training_dataset, on=['user_id'], how='outer')
+
+# Transaction Summary
+
+all_tran_count_cc_df = pd.DataFrame(columns = ['user_id','cc_tran_count','cc_sum_amount'])
+all_tran_count_dc_df = pd.DataFrame(columns = ['user_id','dc_tran_count','dc_sum_amount'])
+
+all_tran_dataframe = pd.DataFrame(columns = ['user_id','cc_tran_count','cc_sum_amount','dc_tran_count','dc_sum_amount'])
+
+for index_number, row in all_user_dataframe.iterrows():
+    target_user_cc = credit_card_transaction_dataset[credit_card_transaction_dataset['user_id']==int(row['user_id'])]
+
+    UserID = row['user_id']
+
+    Size_cc = len(target_user_cc.index)
+    SumAmount_cc = target_user_cc['credit_card_txn_amt'].sum()
+
+    target_user_cc_df = pd.DataFrame([[int(UserID),Size_cc,SumAmount_cc]],columns = ['user_id','cc_tran_count','cc_sum_amount'])
+
+    all_tran_count_cc_df = pd.concat([all_tran_count_cc_df,target_user_cc_df])
+
+    target_user_dc = debit_card_transaction_dataset[debit_card_transaction_dataset['user_id']==int(row['user_id'])]
+
+    Size_dc = len(target_user_dc.index)
+    SumAmount_dc = target_user_dc['debit_card__txn_amt'].sum()
+
+    target_user_dc_df = pd.DataFrame([[int(UserID),Size_dc,SumAmount_dc]],columns = ['user_id','dc_tran_count','dc_sum_amount'])
+
+    all_tran_count_dc_df = pd.concat([all_tran_count_dc_df,target_user_dc_df])
+
+    all_tran_dataframe = pd.merge(all_tran_count_cc_df, all_tran_count_dc_df, on=['user_id'], how='outer')
+
+    print all_tran_dataframe
